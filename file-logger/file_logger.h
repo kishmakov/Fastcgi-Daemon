@@ -1,6 +1,7 @@
 #ifndef _FASTCGI_FILE_LOGGER_H_
 #define _FASTCGI_FILE_LOGGER_H_
 
+#include <chrono>
 #include <vector>
 #include <string>
 #include <boost/thread.hpp>
@@ -53,6 +54,8 @@ private:
     // Condition and mutex for signalling.
     boost::condition queueCondition_;
     boost::mutex queueMutex_;
+
+    std::chrono::system_clock::time_point lastNotify_;
 
     // Writing thread.
     boost::thread writingThread_;

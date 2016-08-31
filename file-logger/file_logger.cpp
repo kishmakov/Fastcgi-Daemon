@@ -30,6 +30,7 @@ FileLogger::FileLogger(ComponentContext *context) : Component(context),
         openMode_(S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH),
         print_level_(true), print_time_(true),
         fd_(-1), stopping_(false),
+        lastNotify_(std::chrono::system_clock::now()),
         writingThread_(boost::bind(&FileLogger::writingThread, this))
 {
     const Config *config = context->getConfig();
@@ -129,7 +130,16 @@ FileLogger::log(const Logger::Level level, const char* format, va_list args) {
         vsnprintf(&data[0], size + 1, fmt, args);
         boost::mutex::scoped_lock lock(queueMutex_);
         queue_.push_back(std::string(data.begin(), data.begin() + size));
-        queueCondition_.notify_one();
+
+        // Trying to decrease csw counter
+        // It is not necessary to notify for every row - huge logs cause too many system calls
+        // Timers are comfort for human eyes and cheap for system
+        using namespace std::chrono;
+        auto now = system_clock::now();
+        if ( duration_cast<milliseconds>(now - lastNotify_).count() > 500 ) {
+            queueCondition_.notify_one(); // system call
+            lastNotify_ = now;
+        }
     }
 }
 
@@ -172,7 +182,8 @@ FileLogger::writingThread() {
         {
             boost::mutex::scoped_lock lock(queueMutex_);
             if (queue_.empty()) {
-                queueCondition_.wait(lock);
+                // timed_wait - protection against loss notify()
+                queueCondition_.timed_wait(lock, boost::posix_time::seconds(1));
             }
             std::swap(queueCopy, queue_);
         }
