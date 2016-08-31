@@ -1,3 +1,9 @@
+fastcgi-daemon2 (2.10-29.passport.2) unstable; urgency=low
+
+  * writev() for file-logger
+
+ -- Klevanets Igor <cerevra@yandex-team.ru>  Wed, 31 Aug 2016 17:40:02 +0300
+
 fastcgi-daemon2 (2.10-29) unstable; urgency=medium
 
   * Do not link against openssl
