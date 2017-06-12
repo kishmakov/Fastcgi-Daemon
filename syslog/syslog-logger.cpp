@@ -20,6 +20,8 @@
 
 namespace fastcgi {
 
+std::string thread_local SyslogLogger::threadIdent_;
+
 SyslogLogger::SyslogLogger(ComponentContext *context) : Component(context) {
     const Config *config = context->getConfig();
     const std::string componentXPath = context->getComponentXPath();

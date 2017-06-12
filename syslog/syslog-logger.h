@@ -35,7 +35,7 @@ private:
 	std::string ident_;
 	int priority_;
 	bool requestSpecificIdent_;
-	static thread_local std::string threadIdent_;
+	static std::string thread_local threadIdent_;
 };
 
 } // namespace fastcgi
