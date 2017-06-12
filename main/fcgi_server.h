@@ -1,18 +1,16 @@
-#ifndef _FASTCGI_FASTCGI_SERVER_H_
-#define _FASTCGI_FASTCGI_SERVER_H_
-
-#include <map>
-#include <string>
-#include <vector>
-#include <memory>
-
-#include <boost/thread/mutex.hpp>
-#include <boost/thread.hpp>
+#pragma once
 
 #include "details/server.h"
 
-namespace fastcgi
-{
+#include <boost/thread.hpp>
+
+#include <mutex>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
+namespace fastcgi {
 
 class Config;
 class Request;
@@ -25,43 +23,44 @@ class RequestsThreadPool;
 
 class ServerStopper {
 public:
-	ServerStopper() : stopped_(false) {}
+    ServerStopper() : stopped_(false) {}
 
-	void stopped(bool flag) {
-		boost::mutex::scoped_lock lock(mutex_);
-		stopped_ = flag;
-	}
+    void stopped(bool flag) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        stopped_ = flag;
+    }
 
-	bool stopped() const {
-		boost::mutex::scoped_lock lock(mutex_);
-		return stopped_;
-	}
+    bool stopped() const {
+        std::lock_guard<std::mutex> lock(mutex_);
+        return stopped_;
+    }
+
 private:
-	mutable boost::mutex mutex_;
-	bool stopped_;
+    mutable std::mutex mutex_;
+    bool stopped_;
 };
 
 class ActiveThreadCounter {
 public:
-	ActiveThreadCounter() : count_(0)
-	{}
-	void increment() {
-		boost::mutex::scoped_lock lock(mutex_);
-		++count_;
-	}
-	void decrement() {
-		boost::mutex::scoped_lock lock(mutex_);
-		--count_;
-	}
+    ActiveThreadCounter() : count_(0) {}
 
-	int count() const {
-		boost::mutex mutex_;
-		return count_;
-	}
+    void increment() {
+        std::lock_guard<std::mutex> lock(mutex_);
+        ++count_;
+    }
+    void decrement() {
+        std::lock_guard<std::mutex> lock(mutex_);
+        --count_;
+    }
+
+    int count() const {
+        std::lock_guard<std::mutex> lock(mutex_);
+        return count_;
+    }
 
 private:
-	boost::mutex mutex_;
-	int count_;
+    mutable std::mutex mutex_;
+    int count_;
 };
 
 class FCGIServer : public Server {
@@ -76,7 +75,7 @@ public:
 	void start();
 	void stop();
 	void join();
-	
+
 private:
 	virtual const Globals* globals() const;
 	virtual Logger* logger() const;
@@ -108,11 +107,11 @@ private:
 
 	std::vector<boost::shared_ptr<Endpoint> > endpoints_;
 	int monitorSocket_;
-	
+
 	RequestCache *request_cache_;
 	ResponseTimeStatistics *time_statistics_;
-	
-	mutable boost::mutex statusInfoMutex_;
+
+	mutable std::mutex statusInfoMutex_;
 	Status status_;
 
 	std::auto_ptr<boost::thread> monitorThread_;
@@ -124,5 +123,3 @@ private:
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_FASTCGI_SERVER_H_

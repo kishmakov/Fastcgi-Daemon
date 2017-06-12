@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,24 +16,20 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_DETAILS_RESPONSE_TIME_STATISTICS_H_
-#define _FASTCGI_DETAILS_RESPONSE_TIME_STATISTICS_H_
-
-#include <string>
+#pragma once
 
 #include <boost/cstdint.hpp>
 
-namespace fastcgi
-{
+#include <string>
+
+namespace fastcgi {
 
 class ResponseTimeStatistics {
 public:
-	ResponseTimeStatistics();
-	virtual ~ResponseTimeStatistics();
+    ResponseTimeStatistics();
+    virtual ~ResponseTimeStatistics();
 
-	virtual void add(const std::string &handler, unsigned short status, boost::uint64_t time) = 0;
+    virtual void add(const std::string &handler, unsigned short status, boost::uint64_t time) = 0;
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_DETAILS_RESPONSE_TIME_STATISTICS_H_

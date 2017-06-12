@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,25 +16,22 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_DETAILS_COMPONENTSET_H_
-#define _FASTCGI_DETAILS_COMPONENTSET_H_
-
-#include <boost/utility.hpp>
+#pragma once
 
 #include <string>
 #include <map>
 #include <vector>
 
-namespace fastcgi
-{
+#include <boost/utility.hpp>
+
+namespace fastcgi {
 
 class Globals;
 class Loader;
 class Component;
 class ComponentContext;
 
-class ComponentSet : private boost::noncopyable
-{
+class ComponentSet : private boost::noncopyable {
 protected:
 	struct ComponentContainer {
 		ComponentContainer();
@@ -43,14 +41,14 @@ protected:
 		bool isLoadingStarted;
     };
     typedef std::map<std::string, ComponentContainer> ComponentMap;
-	
+
 public:
 	ComponentSet();
 	virtual ~ComponentSet();
 
 	void init(const Globals *globals);
 
-	
+
 	Component* find(const std::string &name) const;
 
 protected:
@@ -68,5 +66,3 @@ private:
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_DETAILS_COMPONENTSET_H_

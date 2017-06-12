@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,33 +16,29 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_DETAILS_SERVER_H_
-#define _FASTCGI_DETAILS_SERVER_H_
-
-#include <boost/noncopyable.hpp>
+#pragma once
 
 #include "details/handlerset.h"
 #include "details/request_thread_pool.h"
 
-namespace fastcgi
-{
+#include <boost/noncopyable.hpp>
+
+namespace fastcgi {
 
 class Globals;
 
 class Server : private boost::noncopyable {
 public:
-	Server();
-	virtual ~Server();
-	
-protected:
-	virtual void handleRequest(RequestTask task);
-	virtual const Globals* globals() const = 0;
-	virtual Logger* logger() const = 0;
+    Server();
+    virtual ~Server();
 
-	void handleRequestInternal(const HandlerSet::HandlerDescription* handler, RequestTask task);
-	const HandlerSet::HandlerDescription* getHandler(RequestTask task) const;
+protected:
+    virtual void handleRequest(RequestTask task);
+    virtual const Globals* globals() const = 0;
+    virtual Logger* logger() const = 0;
+
+    void handleRequestInternal(const HandlerSet::HandlerDescription* handler, RequestTask task);
+    const HandlerSet::HandlerDescription* getHandler(RequestTask task) const;
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_DETAILS_SERVER_H_

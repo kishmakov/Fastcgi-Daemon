@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,30 +16,27 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_COMPONENT_FACTORY_H_
-#define _FASTCGI_COMPONENT_FACTORY_H_
+#pragma once
 
 #include <string>
 #include <map>
 
 #include <boost/utility.hpp>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 class Component;
 class ComponentFactory;
 class ComponentContext;
-	
+
 typedef std::map<std::string, ComponentFactory*> FactoryMap;
 
-class ComponentFactory : private boost::noncopyable
-{
+class ComponentFactory : private boost::noncopyable {
 public:
 	ComponentFactory();
 	virtual ~ComponentFactory();
 	virtual Component* createComponent(ComponentContext *context) = 0;
-}; 
+};
 
 template<typename T>
 class DefaultComponentFactory : public ComponentFactory {
@@ -46,7 +44,7 @@ public:
 	virtual Component* createComponent(ComponentContext *context) {
 		return new T(context);
 	}
-	
+
 	virtual ~DefaultComponentFactory() {
 	}
 };
@@ -66,7 +64,7 @@ typedef fastcgi::FactoryMap* (*FastcgiGetFactoryMapFunction)();
 	extern "C" FCGIDAEMON_DSO_GLOBALLY_VISIBLE \
 	const fastcgi::FactoryMap* getFactoryMap() { \
 		static fastcgi::FactoryMap m;
-			        
+
 #define FCGIDAEMON_ADD_DEFAULT_FACTORY(name, Type) \
 		m.insert(std::make_pair((name), new fastcgi::DefaultComponentFactory<Type>));
 
@@ -77,5 +75,4 @@ typedef fastcgi::FactoryMap* (*FastcgiGetFactoryMapFunction)();
 	    return &m; \
 	}
 
-#endif //_FASTCGI_COMPONENT_FACTORY_H_
 

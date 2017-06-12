@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,20 +16,16 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_REQUEST_IO_STREAM_H_
-#define _FASTCGI_REQUEST_IO_STREAM_H_
+#pragma once
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 class RequestIOStream {
 public:
-	virtual int read(char *buf, int size) = 0;
-	virtual int write(const char *buf, int size) = 0;
-	virtual void write(std::streambuf *buf) = 0;
-	virtual void flush() = 0;
+    virtual int read(char *buf, int size) = 0;
+    virtual int write(const char *buf, int size) = 0;
+    virtual void write(std::streambuf *buf) = 0;
+    virtual void flush() = 0;
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_REQUEST_IO_STREAM_H_

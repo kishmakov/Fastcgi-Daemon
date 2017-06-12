@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,23 +16,20 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_COMPONENT_H_
-#define _FASTCGI_COMPONENT_H_
+#pragma once
 
 #include <string>
 #include <boost/utility.hpp>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 class Config;
 class Component;
 
-class ComponentContext : private boost::noncopyable
-{
+class ComponentContext : private boost::noncopyable {
 public:
 	virtual ~ComponentContext();
-	
+
 	virtual const Config* getConfig() const = 0;
 	virtual std::string getComponentXPath() const = 0;
 
@@ -40,12 +38,11 @@ public:
 		return dynamic_cast<T*>(findComponentInternal(name));
 	}
 
-protected:	
+protected:
 	virtual Component* findComponentInternal(const std::string &name) const = 0;
 };
 
-class Component : private boost::noncopyable
-{
+class Component : private boost::noncopyable {
 public:
 	Component(ComponentContext *context);
 	virtual ~Component();
@@ -62,5 +59,3 @@ private:
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_COMPONENT_H_

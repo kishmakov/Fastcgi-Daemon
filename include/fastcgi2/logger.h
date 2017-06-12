@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,22 +16,19 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_LOGGER_H_
-#define _FASTCGI_LOGGER_H_
+#pragma once
 
-#include <cstdarg>
 #include <boost/utility.hpp>
+#include <cstdarg>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
-class Logger : private boost::noncopyable
-{
+class Logger : private boost::noncopyable {
 public:
 	enum Level {
 		DEBUG, INFO, ERROR, EMERGENCY
 	};
-	
+
 public:
 	Logger();
 	virtual ~Logger();
@@ -59,8 +57,7 @@ private:
 	Level level_;
 };
 
-class LoggerRequestId
-{
+class LoggerRequestId {
 public:
 	LoggerRequestId();
 	virtual ~LoggerRequestId();
@@ -79,5 +76,3 @@ protected:
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_LOGGER_H_

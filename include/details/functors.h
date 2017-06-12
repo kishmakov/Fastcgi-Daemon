@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,22 +16,21 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_DETAILS_FUNCTORS_H_
-#define _FASTCGI_DETAILS_FUNCTORS_H_
+#pragma once
+
+#include "settings.h"
+#include "details/range.h"
+
+#include <boost/bind.hpp>
+#include <boost/cstdint.hpp>
 
 #include <cctype>
 #include <string>
 #include <cstring>
 #include <algorithm>
 #include <functional>
-#include <boost/bind.hpp>
-#include <boost/cstdint.hpp>
 
-#include "settings.h"
-#include "details/range.h"
-
-namespace fastcgi
-{
+namespace fastcgi {
 
 struct CharCILess : public std::binary_function<char, char, bool>
 {
@@ -81,5 +81,3 @@ struct StringCILess : public std::binary_function<const std::string&, const std:
 #endif
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_DETAILS_FUNCTORS_H_

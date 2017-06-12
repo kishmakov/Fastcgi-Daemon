@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,19 +16,17 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_REQUEST_H_
-#define _FASTCGI_REQUEST_H_
+#pragma once
+
+#include <fastcgi2/data_buffer.h>
+
+#include <boost/utility.hpp>
 
 #include <string>
 #include <vector>
 #include <memory>
 
-#include <boost/utility.hpp>
-
-#include <fastcgi2/data_buffer.h>
-
-namespace fastcgi
-{
+namespace fastcgi {
 
 class Cookie;
 class Logger;
@@ -126,6 +125,3 @@ private:
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_REQUEST_H_
-

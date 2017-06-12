@@ -23,16 +23,16 @@ AC_CXX_GNUCXX_HASHMAP
 AC_CXX_STLPORT_HASHMAP
 AC_CXX_HAVE_EXT_HASH_MAP
 
-PKG_CHECK_MODULES(xml, [libxml-2.0], [], 
+PKG_CHECK_MODULES(xml, [libxml-2.0], [],
 	AC_MSG_ERROR([libxml not found]))
 
 AX_CHECK_FASTCGI([],
 	AC_MSG_ERROR([libfcgi not found]))
 
-AX_CHECK_DMALLOC([], 
+AX_CHECK_DMALLOC([],
 	AC_MSG_WARN([dmalloc library not found]))
 
-AX_CHECK_CPPUNIT([1.10.0], [], 
+AX_CHECK_CPPUNIT([1.10.0], [],
 	AC_MSG_WARN([cppunit library not found. compilation of tests disabled]))
 
 have_va_copy="yes"
@@ -75,14 +75,14 @@ then
     AC_MSG_ERROR([boost regex lib not found, unable to compile])
 fi
 
-for i in -W -Wall -Wextra -fexceptions -frtti -ftemplate-depth-128; do
+for i in -W -Wall -Wextra -fexceptions -frtti -ftemplate-depth-128 -std=c++0x; do
 	AX_CHECK_COMPILER_FLAGS([$i], [CXXFLAGS="$CXXFLAGS $i"], [])
 done
 
 LIBS=$stored_libs
 
-AC_CONFIG_FILES([Makefile include/Makefile include/fastcgi2/Makefile 
-	include/details/Makefile library/Makefile main/Makefile tests/Makefile 
+AC_CONFIG_FILES([Makefile include/Makefile include/fastcgi2/Makefile
+	include/details/Makefile library/Makefile main/Makefile tests/Makefile
 	example/Makefile syslog/Makefile statistics/Makefile
 	file-logger/Makefile])
 

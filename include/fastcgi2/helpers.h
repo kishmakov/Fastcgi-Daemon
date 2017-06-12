@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,30 +16,27 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_HELPERS_H_
-#define _FASTCGI_HELPERS_H_
+#pragma once
 
 #include <cassert>
 #include <algorithm>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
-template<typename Type, typename Clean>
-class Helper
-{
+template <typename Type, typename Clean>
+class Helper {
 public:
 	Helper() throw ();
 	explicit Helper(Type tptr) throw ();
-	
+
 	Helper(const Helper<Type, Clean> &h) throw ();
 	Helper<Type, Clean>& operator = (const Helper<Type, Clean> &h) throw ();
-	
+
 	~Helper() throw ();
 
 	Type get() const throw ();
 	Type operator -> () const throw ();
-	
+
 	Type release() throw ();
 	void reset(Type tptr) throw ();
 
@@ -115,5 +113,3 @@ Helper<Type, Clean>::releaseInternal() const throw () {
 }
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_HELPERS_H_

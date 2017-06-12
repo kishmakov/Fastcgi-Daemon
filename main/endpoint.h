@@ -1,10 +1,8 @@
-#ifndef _FASTCGI_FASTCGI_ENDPOINT_H_
-#define _FASTCGI_FASTCGI_ENDPOINT_H_
+#pragma once
 
 #include <boost/thread/mutex.hpp>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 class Endpoint {
 public:
@@ -45,4 +43,3 @@ private:
 
 } // namespace fastcgi
 
-#endif // _FASTCGI_FASTCGI_ENDPOINT_H_

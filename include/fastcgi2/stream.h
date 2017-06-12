@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,29 +16,26 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_STREAM_H_
-#define _FASTCGI_STREAM_H_
+#pragma once
 
 #include <string>
 #include <sstream>
 #include <boost/utility.hpp>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 class Request;
 
-class RequestStream : private boost::noncopyable
-{
+class RequestStream : private boost::noncopyable {
 public:
 	RequestStream(Request *req);
 	virtual ~RequestStream();
-	
+
 	RequestStream& operator << (std::ostream& (*f)(std::ostream &os)) {
 		stream_ << f;
 		return *this;
 	}
-	
+
 	template<typename T> RequestStream& operator << (const T &value) {
 		stream_ << value;
 		return *this;
@@ -49,5 +47,3 @@ private:
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_STREAM_H_

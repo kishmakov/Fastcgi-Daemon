@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,29 +16,26 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_DETAILS_REQUEST_CACHE_H_
-#define _FASTCGI_DETAILS_REQUEST_CACHE_H_
+#pragma once
 
-#include <time.h>
 #include <boost/cstdint.hpp>
 #include <boost/noncopyable.hpp>
 
-namespace fastcgi
-{
+#include <time.h>
+
+namespace fastcgi {
 
 class DataBuffer;
 class Request;
 
 class RequestCache : private boost::noncopyable {
 public:
-	RequestCache() {};
-	virtual ~RequestCache() {};
+    RequestCache() {};
+    virtual ~RequestCache() {};
 
-	virtual DataBuffer create() = 0;
-	virtual void save(Request *request, time_t delay) = 0;
-	virtual boost::uint32_t minPostSize() const = 0;
+    virtual DataBuffer create() = 0;
+    virtual void save(Request *request, time_t delay) = 0;
+    virtual boost::uint32_t minPostSize() const = 0;
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_DETAILS_REQUEST_CACHE_H_

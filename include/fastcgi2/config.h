@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,8 +16,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_CONFIG_H_
-#define _FASTCGI_CONFIG_H_
+#pragma once
 
 #include <map>
 #include <string>
@@ -27,8 +27,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/utility.hpp>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 typedef std::ostream& (*HelpFunc)(std::ostream &stream);
 
@@ -36,15 +35,15 @@ class Config : private boost::noncopyable {
 public:
 	Config();
 	virtual ~Config();
-	
+
 	virtual int asInt(const std::string &value) const = 0;
 	virtual int asInt(const std::string &value, int defval) const = 0;
-	
+
 	virtual std::string asString(const std::string &value) const = 0;
 	virtual std::string asString(const std::string &value, const std::string &defval) const = 0;
-	
+
 	virtual void subKeys(const std::string &value, std::vector<std::string> &v) const = 0;
-	
+
 	static std::auto_ptr<Config> create(const char *file);
 	static std::auto_ptr<Config> create(int &argc, char *argv[], HelpFunc func = NULL);
 
@@ -57,10 +56,7 @@ private:
 	Config(const Config &);
 	Config& operator = (const Config &);
 
-private:
 	std::string filename_;
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_CONFIG_H_

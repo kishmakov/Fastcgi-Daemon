@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,8 +16,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_UTIL_H_
-#define _FASTCGI_UTIL_H_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -24,27 +24,25 @@
 
 #include <fastcgi2/data_buffer.h>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 class Range;
 
-class StringUtils : private boost::noncopyable
-{
+class StringUtils : private boost::noncopyable {
 public:
 	static std::string urlencode(const Range &val);
 	static std::string urlencode(const std::string &val);
-	
+
 	static std::string urldecode(const Range &val);
 	static std::string urldecode(DataBuffer data);
 	static std::string urldecode(const std::string &val);
-	
+
 	typedef std::pair<std::string, std::string> NamedValue;
-	
+
 	static void parse(const Range &range, std::vector<NamedValue> &v);
 	static void parse(const std::string &str, std::vector<NamedValue> &v);
 	static void parse(DataBuffer data, std::vector<NamedValue> &v);
-	
+
 	static const std::string EMPTY_STRING;
 
 private:
@@ -54,8 +52,7 @@ private:
 	virtual ~StringUtils();
 };
 
-class HttpDateUtils : private boost::noncopyable
-{
+class HttpDateUtils : private boost::noncopyable {
 public:
 	static time_t parse(const char *value);
 	static std::string format(time_t value);
@@ -66,5 +63,3 @@ private:
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_UTIL_H_

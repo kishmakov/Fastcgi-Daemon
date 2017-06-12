@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,19 +16,17 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_DETAILS_LOADER_H_
-#define _FASTCGI_DETAILS_LOADER_H_
+#pragma once
 
-#include <boost/utility.hpp>
-#include <boost/shared_ptr.hpp>
+#include <fastcgi2/component_factory.h>
 
 #include <string>
 #include <vector>
 
-#include <fastcgi2/component_factory.h>
+#include <boost/utility.hpp>
+#include <boost/shared_ptr.hpp>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 class Config;
 class ComponentFactory;
@@ -35,21 +34,20 @@ class ComponentFactory;
 class Loader : private boost::noncopyable
 {
 public:
-	Loader();
-	virtual ~Loader();
+    Loader();
+    virtual ~Loader();
 
-	virtual void init(const Config *config);
-	virtual ComponentFactory *findComponentFactory(const std::string &type) const;
-	
+    virtual void init(const Config *config);
+    virtual ComponentFactory *findComponentFactory(const std::string &type) const;
+
 protected:
-	virtual void load(const char *name, const char *path);
-	void checkLoad(const char *err);
+    virtual void load(const char *name, const char *path);
+    void checkLoad(const char *err);
 
 private:
-	std::vector<void*> handles_;
-	FactoryMap factories_;
+    std::vector<void*> handles_;
+    FactoryMap factories_;
 };
 
 } // namespace fastcgi
 
-#endif // _FASTCGI_DETAILS_LOADER_H_

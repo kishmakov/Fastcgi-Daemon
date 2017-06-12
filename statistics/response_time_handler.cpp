@@ -1,20 +1,18 @@
+#include "response_time_handler.h"
+
 #include "settings.h"
+#include "fastcgi2/component_factory.h"
+#include "fastcgi2/request.h"
 
 #include <sys/time.h>
 
 #include <boost/lexical_cast.hpp>
 
-#include "fastcgi2/component_factory.h"
-#include "fastcgi2/request.h"
-
-#include "response_time_handler.h"
-
 #ifdef HAVE_DMALLOC_H
 #include <dmalloc.h>
 #endif
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 CounterData::CounterData() : min_(std::numeric_limits<boost::uint64_t>::max()),
 	max_(0), total_(0), hits_(0)
@@ -71,7 +69,7 @@ ResponseTimeHandler::handleRequest(Request *req, HandlerContext *handlerContext)
 	str << "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 	str << "<response-time>";
 	{
-		boost::mutex::scoped_lock lock(mutex_);
+		std::lock_guard<std::mutex> lock(mutex_);
 		for (std::map<std::string, CounterMapType>::iterator iter = data_.begin();
 			 iter != data_.end();
 			 ++iter) {
@@ -97,7 +95,7 @@ ResponseTimeHandler::handleRequest(Request *req, HandlerContext *handlerContext)
 
 void
 ResponseTimeHandler::add(const std::string &handler, unsigned short status, boost::uint64_t time) {
-	boost::mutex::scoped_lock lock(mutex_);
+	std::lock_guard<std::mutex> lock(mutex_);
 	CounterMapType& handle = data_[handler];
 	CounterMapType::iterator it = handle.find(status);
 	if (handle.end() == it) {

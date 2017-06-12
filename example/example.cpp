@@ -53,7 +53,7 @@ ExampleHandler::~ExampleHandler() {
 }
 
 void
-ExampleHandler::onLoad() {	
+ExampleHandler::onLoad() {
 	std::cout << "onLoad handler1 executed" << std::endl;
 	const std::string loggerComponentName = context()->getConfig()->asString(context()->getComponentXPath() + "/logger");
 	logger_ = context()->findComponent<fastcgi::Logger>(loggerComponentName);
@@ -62,7 +62,7 @@ ExampleHandler::onLoad() {
 	}
 }
 
-void 
+void
 ExampleHandler::onUnload() {
 	std::cout << "onUnload handler1 executed" << std::endl;
 }
@@ -90,7 +90,7 @@ ExampleHandler::handleRequest(fastcgi::Request *req, fastcgi::HandlerContext *ha
 		stream << "cookie " << (*i) << " has value " << req->getCookie(*i) << "\n";
 	}*/
 
-	stream << "test ok\n";
+	stream << "test not ok\n";
 
 //	logger_->info("request processed");
 
@@ -106,7 +106,7 @@ ExampleHandler2::~ExampleHandler2() {
 }
 
 void
-ExampleHandler2::onLoad() {  
+ExampleHandler2::onLoad() {
 	std::cout << "onLoad handler2 executed" << std::endl;
 }
 

@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,16 +16,13 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_DETAILS_REQUEST_FILTER_H_
-#define _FASTCGI_DETAILS_REQUEST_FILTER_H_
-
-#include <string>
+#pragma once
 
 #include <boost/regex.hpp>
 
+#include <string>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 class Request;
 
@@ -105,5 +103,3 @@ private:
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_DETAILS_REQUEST_FILTER_H_

@@ -70,7 +70,7 @@ FileLogger::FileLogger(ComponentContext *context) : Component(context),
             std::cerr << "failed to create dir: " << name << ". Errno: " << errno << std::endl;
         }
     }
-    
+
     openFile();
 }
 
@@ -93,7 +93,7 @@ FileLogger::onUnload() {
 }
 
 void FileLogger::openFile() {
-    boost::mutex::scoped_lock fdLock(fdMutex_);
+    std::lock_guard<std::mutex> fdLock(fdMutex_);
     if (fd_ != -1) {
         close(fd_);
     }
@@ -130,7 +130,7 @@ FileLogger::log(const Logger::Level level, const char* format, va_list args) {
     if (size > 0) {
         std::vector<char> data(size + 1);
         vsnprintf(&data[0], size + 1, fmt, args);
-        boost::mutex::scoped_lock lock(queueMutex_);
+        std::lock_guard<std::mutex> lock(queueMutex_);
         queue_.push_back(std::string(data.begin(), data.begin() + size));
         queueCondition_.notify_one();
     }
@@ -173,12 +173,12 @@ FileLogger::writingThread() {
     while (!stopping_) {
         std::vector<std::string> queueCopy;
         {
-            boost::mutex::scoped_lock lock(queueMutex_);
+            std::unique_lock<std::mutex> lock(queueMutex_);
             queueCondition_.wait(lock);
             std::swap(queueCopy, queue_);
         }
 
-        boost::mutex::scoped_lock fdlock(fdMutex_);
+        std::lock_guard<std::mutex> fdlock(fdMutex_);
         if (fd_ != -1) {
             for (std::vector<std::string>::iterator i = queueCopy.begin(); i != queueCopy.end(); ++i) {
                 size_t wrote = 0;
@@ -201,4 +201,4 @@ FCGIDAEMON_REGISTER_FACTORIES_BEGIN()
 FCGIDAEMON_ADD_DEFAULT_FACTORY("logger", fastcgi::FileLogger)
 FCGIDAEMON_REGISTER_FACTORIES_END()
 
-} // namespace xscript
+} // namespace fastcgi

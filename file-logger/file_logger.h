@@ -1,34 +1,31 @@
-#ifndef _FASTCGI_FILE_LOGGER_H_
-#define _FASTCGI_FILE_LOGGER_H_
-
-#include <vector>
-#include <string>
-#include <boost/thread.hpp>
-#include <boost/thread/condition.hpp>
+#pragma once
 
 #include "fastcgi2/component.h"
 #include "fastcgi2/logger.h"
 
-namespace fastcgi
-{
+#include <condition_variable>
+#include <mutex>
+#include <string>
+#include <thread>
+#include <vector>
+
+namespace fastcgi {
 
 class FileLogger : virtual public Logger, virtual public Component {
 public:
     FileLogger(ComponentContext *context);
     ~FileLogger();
 
-	virtual void onLoad();
-	virtual void onUnload();
+    virtual void onLoad();
+    virtual void onUnload();
 
-	virtual void log(const Logger::Level level, const char *format, va_list args);
+    virtual void log(const Logger::Level level, const char *format, va_list args);
 private:
-	virtual void rollOver();
+    virtual void rollOver();
 
 private:
-    // File name
     std::string filename_;
 
-    // Open mode
     mode_t openMode_;
 
     // Time format specification
@@ -41,8 +38,7 @@ private:
     int fd_;
 
     // Lock of file descriptor to avoid logrotate race-condition
-    boost::mutex fdMutex_;
-
+    std::mutex fdMutex_;
 
     // Writing queue.
     // All writes happens in separate thread. All someInternal methods just
@@ -55,12 +51,10 @@ private:
     std::vector<std::string> queue_;
 
     // Condition and mutex for signalling.
-    boost::condition queueCondition_;
-    boost::mutex queueMutex_;
+    std::condition_variable queueCondition_;
+    std::mutex queueMutex_;
 
-    // Writing thread.
-    boost::thread writingThread_;
-
+    std::thread writingThread_;
 
     void openFile();
     void prepareFormat(char * buf, size_t size, const Logger::Level level, const char* format);
@@ -68,6 +62,4 @@ private:
     void writingThread();
 };
 
-}
-
-#endif // _FASTCGI_FILE_LOGGER_H_
+} // namespace fastcgi

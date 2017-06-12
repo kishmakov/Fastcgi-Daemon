@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,8 +16,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_DETAILS_RANGE_H_
-#define _FASTCGI_DETAILS_RANGE_H_
+#pragma once
 
 #include <cctype>
 #include <string>
@@ -26,39 +26,37 @@
 #include <algorithm>
 #include <string.h>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
-class Range
-{
+class Range {
 public:
 	typedef std::size_t size_type;
 
 	Range() : begin_(NULL), end_(NULL) {
 	}
 
-	Range(const char* begin, const char* end) : begin_(begin), end_(end) { 
+	Range(const char* begin, const char* end) : begin_(begin), end_(end) {
 		assert(begin <= end);
 	}
 
-	const char* end() const { 
+	const char* end() const {
 		return end_;
 	}
 
-	const char* begin() const { 
+	const char* begin() const {
 		return begin_;
 	}
 
-	bool empty() const { 
+	bool empty() const {
 		return begin_ == end_;
 	}
 
-	Range::size_type size() const { 
-		return end_ - begin_; 
+	Range::size_type size() const {
+		return end_ - begin_;
 	}
 
-	char operator[] (Range::size_type i) const { 
-		assert(i < size()); 
+	char operator[] (Range::size_type i) const {
+		assert(i < size());
 		return begin_[i];
 	}
 
@@ -86,7 +84,7 @@ public:
 		return Range(begin, end);
 	}
 
-	const char* find(const Range& substr) const { 
+	const char* find(const Range& substr) const {
 		if (substr.size() == 1) {
 			return find(*substr.begin());
 		}
@@ -106,14 +104,14 @@ public:
 	bool split(const char delim, Range& first, Range& second) const {
 		return doSplit(find(delim), 1, first, second);
 	}
-	
+
 	bool endsWith(const Range &range) {
 		if (range.size() <= size()) {
 			return memcmp(end_ - range.size(), range.begin(), range.size()) == 0;
 		}
 		return false;
 	}
-	
+
 	bool startsWith(const Range &range) const {
 		if (range.size() <= size()) {
 			return memcmp(begin_, range.begin_, range.size()) == 0;
@@ -152,12 +150,12 @@ public:
 		return Range(&vec[0], &vec[0] + vec.size());
 	}
 
-	std::string toString() const { 
+	std::string toString() const {
 		return (NULL == begin()) ? std::string() : std::string(begin_, end_);
 	}
 
 private:
-	
+
 	bool doSplit(const char* e, size_type size, Range& first, Range& second) const {
 		const char *begin = begin_;
 		const char *end = end_;
@@ -165,17 +163,15 @@ private:
 		if (e != end) {
 			second = Range(e + size, end);
 			return true;
-		} 
+		}
 		else {
 			second = Range(end, end);
 			return false;
 		}
 	}
-	
+
 private:
 	const char *begin_, *end_;
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_DETAILS_RANGE_H_

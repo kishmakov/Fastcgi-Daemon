@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,14 +16,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_DETAILS_REQUESTIMPL_H_
-#define _FASTCGI_DETAILS_REQUESTIMPL_H_
-
-#include <set>
-#include <map>
-#include <iosfwd>
-#include <functional>
-#include <boost/cstdint.hpp>
+#pragma once
 
 #include "settings.h"
 
@@ -40,20 +34,25 @@
 #include "details/range.h"
 #include "details/functors.h"
 
-namespace fastcgi
-{
+#include <boost/cstdint.hpp>
 
-class File
-{
+#include <set>
+#include <map>
+#include <iosfwd>
+#include <functional>
+
+namespace fastcgi {
+
+class File {
 public:
-	File(DataBuffer filename, DataBuffer type, DataBuffer content);
+    File(DataBuffer filename, DataBuffer type, DataBuffer content);
 	File(const std::string &filename, const std::string &type, DataBuffer content);
-	
+
 	const std::string& type() const;
 	const std::string& remoteName() const;
-	
+
 	DataBuffer data() const;
-	
+
 private:
 	std::string name_, type_;
 	DataBuffer data_;
@@ -94,12 +93,12 @@ public:
 
 	const std::string& getPathInfo() const;
 	const std::string& getPathTranslated() const;
-	
+
 	const std::string& getScriptName() const;
 	const std::string& getScriptFilename() const;
-	
+
 	const std::string& getDocumentRoot() const;
-	
+
 	const std::string& getRemoteUser() const;
 	const std::string& getRemoteAddr() const;
 	const std::string& getQueryString() const;
@@ -108,18 +107,18 @@ public:
 
 	std::streamsize getContentLength() const;
 	const std::string& getContentType() const;
-	
+
 	unsigned int countArgs() const;
 	bool hasArg(const std::string &name) const;
 	const std::string& getArg(const std::string &name) const;
 	void getArg(const std::string &name, std::vector<std::string> &v) const;
 	void argNames(std::vector<std::string> &v) const;
-	
+
 	unsigned int countHeaders() const;
 	bool hasHeader(const std::string &name) const;
 	const std::string& getHeader(const std::string &name) const;
 	void headerNames(std::vector<std::string> &v) const;
-	
+
 	unsigned int countCookie() const;
 	bool hasCookie(const std::string &name) const;
 	const std::string& getCookie(const std::string &name) const;
@@ -127,19 +126,19 @@ public:
 
 	bool hasFile(const std::string &name) const;
 	void remoteFiles(std::vector<std::string> &v) const;
-	
+
 	const std::string& remoteFileName(const std::string &name) const;
 	const std::string& remoteFileType(const std::string &name) const;
 	DataBuffer remoteFile(const std::string &name) const;
 
 	bool isSecure() const;
 	DataBuffer requestBody() const;
-	
+
 	void setCookie(const Cookie &cookie);
 	void setStatus(unsigned short status);
 	void sendError(unsigned short status);
 	void setHeader(const std::string &name, const std::string &value);
-	
+
 	void write(std::streambuf *buf);
 	std::streamsize write(const char *buf, std::streamsize size);
 	std::string outputHeader(const std::string &name) const;
@@ -155,7 +154,7 @@ public:
 	void reset();
 	void sendHeaders();
 	void attach(RequestIOStream *stream, char *env[]);
-	
+
 	unsigned short status() const;
 
 	void flush();
@@ -205,5 +204,3 @@ private:
 };
 
 } // namespace xscript
-
-#endif // _FASTCGI_DETAILS_REQUESTIMPL_H_

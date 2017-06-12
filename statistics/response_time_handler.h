@@ -1,18 +1,16 @@
-#ifndef _FASTCGI_STATISTICS_RESPONSE_TIME_HANDLER_H_
-#define _FASTCGI_STATISTICS_RESPONSE_TIME_HANDLER_H_
+#pragma once
 
-#include <string>
-
-#include <boost/cstdint.hpp>
-#include <boost/thread/mutex.hpp>
+#include "details/response_time_statistics.h"
 
 #include "fastcgi2/component.h"
 #include "fastcgi2/handler.h"
 
-#include "details/response_time_statistics.h"
+#include <boost/cstdint.hpp>
 
-namespace fastcgi
-{
+#include <mutex>
+#include <string>
+
+namespace fastcgi {
 
 class CounterData {
 public:
@@ -43,11 +41,9 @@ public:
 	virtual void add(const std::string &handler, unsigned short status, boost::uint64_t time);
 
 private:
-	boost::mutex mutex_;
+	std::mutex mutex_;
 	typedef std::map<unsigned short, boost::shared_ptr<CounterData> > CounterMapType;
 	std::map<std::string, CounterMapType> data_;
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_STATISTICS_RESPONSE_TIME_HANDLER_H_

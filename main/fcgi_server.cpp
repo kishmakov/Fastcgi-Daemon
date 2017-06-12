@@ -76,7 +76,7 @@ FCGIServer::logger() const {
 
 FCGIServer::Status
 FCGIServer::status() const {
-	boost::mutex::scoped_lock l(statusInfoMutex_);
+	std::lock_guard<std::mutex> l(statusInfoMutex_);
 	return status_;
 }
 
@@ -99,7 +99,7 @@ FCGIServer::start() {
 	createWorkThreads();
 
 	{
-		boost::mutex::scoped_lock l(statusInfoMutex_);
+		std::lock_guard<std::mutex> l(statusInfoMutex_);
 		status_ = RUNNING;
 	}
 
@@ -242,7 +242,7 @@ FCGIServer::initFastCGISubsystem() {
 			globals_->config()->asString(*i + "/port", ""),
 			boost::lexical_cast<unsigned>(globals_->config()->asString(*i + "/threads"))));
 		const int backlog = globals_->config()->asInt(*i + "/backlog", SOMAXCONN);
-		endpoint->openSocket(backlog);	
+		endpoint->openSocket(backlog);
 		endpoints_.push_back(endpoint);
 	}
 
@@ -345,12 +345,12 @@ FCGIServer::monitor() {
 			if ('i' == c || 'I' == c) {
 				std::string info = getServerInfo();
 				write(s, info.c_str(), info.size());
-			} else if ('s' == c || 'S' == c) { 
+			} else if ('s' == c || 'S' == c) {
 				stop();
 			}
 
 			close(s);
-		} 
+		}
 		catch (const std::exception &e) {
 			if (-1 != s) {
 				close(s);
@@ -362,7 +362,7 @@ FCGIServer::monitor() {
 					continue;
 				}
 				if (stopper->stopped()) {
-					continue;	
+					continue;
 				}
 			}
 			std::cerr << e.what() << ", errno = " << errno << std::endl;
@@ -420,7 +420,7 @@ FCGIServer::getServerInfo() const {
 			 ++i) {
 			s << "<endpoint"
 				<< " socket=\"" << (*i)->toString() << "\""
-				<< " threads=\"" << (*i)->threads() << "\"" 
+				<< " threads=\"" << (*i)->threads() << "\""
 				<< " busy=\"" << (*i)->getBusyCounter() << "\""
 				<< "/>\n";
 		}
@@ -446,7 +446,7 @@ FCGIServer::getServerInfo() const {
 
 		info += s.str();
 	}
-	
+
 	info += "</fastcgi-daemon>\n";
 
 	return info;

@@ -1,23 +1,22 @@
-#include "settings.h"
-
-#include <cstring>
-
-#include <boost/lexical_cast.hpp>
-
-#include "endpoint.h"
 #include "fcgi_request.h"
+
+#include "settings.h"
+#include "endpoint.h"
 
 #include "fastcgi2/logger.h"
 #include "fastcgi2/request.h"
 
 #include "details/response_time_statistics.h"
 
+#include <boost/lexical_cast.hpp>
+
+#include <cstring>
+
 #ifdef HAVE_DMALLOC_H
 #include <dmalloc.h>
 #endif
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 static const std::string DAEMON_STRING = "fastcgi-daemon";
 
@@ -75,7 +74,7 @@ FastcgiRequest::attach() {
 
     LoggerRequestId *logger_req_id = dynamic_cast<LoggerRequestId*>(logger_);
     if (logger_req_id) {
-		logger_req_id->setRequestId(request_id_);
+        logger_req_id->setRequestId(request_id_);
     }
 
     request_->attach(this, fcgiRequest_.envp);

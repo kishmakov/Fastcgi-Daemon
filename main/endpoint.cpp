@@ -1,3 +1,4 @@
+#include "endpoint.h"
 #include "settings.h"
 
 #include <sys/stat.h>
@@ -7,14 +8,11 @@
 
 #include <fcgiapp.h>
 
-#include "endpoint.h"
-
 #ifdef HAVE_DMALLOC_H
 #include <dmalloc.h>
 #endif
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 Endpoint::ScopedBusyCounter::ScopedBusyCounter(Endpoint &endpoint) :
 	incremented_(false), endpoint_(endpoint) {

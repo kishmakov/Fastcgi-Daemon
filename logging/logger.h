@@ -1,18 +1,15 @@
-#ifndef _FASTCGI_LOG4CXX_LOGGER_H_
-#define _FASTCGI_LOG4CXX_LOGGER_H_
-
-#include <log4cxx/logger.h>
-#include <log4cxx/rollingfileappender.h>
+#pragma once
 
 #include "fastcgi2/logger.h"
 #include "fastcgi2/component.h"
 #include "fastcgi2/handler.h"
 
-namespace fastcgi
-{
+#include <log4cxx/logger.h>
+#include <log4cxx/rollingfileappender.h>
 
-class DefaultLogger : virtual public Logger, virtual public Component, virtual public Handler
-{
+namespace fastcgi {
+
+class DefaultLogger : virtual public Logger, virtual public Component, virtual public Handler {
 public:
 	DefaultLogger(ComponentContext *context);
 	virtual ~DefaultLogger();
@@ -21,7 +18,7 @@ public:
 	virtual void onUnload();
 
 	virtual void handleRequest(Request *request, HandlerContext *handlerContext);
-	
+
 protected:
 	virtual void log(const Level level, const char *format, va_list args);
 	virtual void setLevelInternal(const Level level);
@@ -36,5 +33,3 @@ private:
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_LOG4CXX_LOGGER_H_

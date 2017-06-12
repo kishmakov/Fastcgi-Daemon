@@ -1,5 +1,6 @@
 // Fastcgi Daemon - framework for design highload FastCGI applications on C++
 // Copyright (C) 2011 Ilya Golubtsov <golubtsov@yandex-team.ru>
+// Copyright (C) 2017 Kirill Shmakov <menato@yandex-team.ru>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,15 +16,13 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-#ifndef _FASTCGI_COOKIE_H_
-#define _FASTCGI_COOKIE_H_
+#pragma once
 
 #include <ctime>
 #include <memory>
 #include <string>
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 class Cookie {
 public:
@@ -32,13 +31,13 @@ public:
 	virtual ~Cookie();
 	Cookie& operator=(const Cookie &cookie);
 	bool operator < (const Cookie &cookie) const;
-	
+
 	const std::string& name() const;
 	const std::string& value() const;
-	
+
 	bool secure() const;
 	void secure(bool value);
-	
+
 	time_t expires() const;
 	void expires(time_t value);
 
@@ -50,7 +49,7 @@ public:
 
 	const std::string& path() const;
 	void path(const std::string &value);
-	
+
 	const std::string& domain() const;
 	void domain(const std::string &value);
 
@@ -64,5 +63,3 @@ private:
 };
 
 } // namespace fastcgi
-
-#endif // _FASTCGI_COOKIE_H_
