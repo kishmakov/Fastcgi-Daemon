@@ -1,3 +1,4 @@
+#include "syslog-logger.h"
 #include "settings.h"
 
 #include "fastcgi2/logger.h"
@@ -5,8 +6,6 @@
 #include "fastcgi2/request.h"
 #include "fastcgi2/stream.h"
 #include "fastcgi2/component_factory.h"
-
-#include "syslog-logger.h"
 
 #include <iostream>
 #include <sstream>
