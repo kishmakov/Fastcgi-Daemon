@@ -8,8 +8,7 @@
 #include <dmalloc.h>
 #endif
 
-namespace fastcgi
-{
+namespace fastcgi {
 
 ComponentContext::~ComponentContext() {
 }
