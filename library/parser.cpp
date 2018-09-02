@@ -143,22 +143,29 @@ static const std::string ONE_TAB_STRING = "\t";
 static const std::string MINUS_PREFIX_STRING = "--";
 static const std::string NAME_STRING = "name";
 static const std::string FILENAME_STRING = "filename";
-static const std::string CONTENT_TYPE_STRING = "CONTENT_TYPE";
+//static const std::string CONTENT_TYPE_STRING = "CONTENT_TYPE";
+static const std::string CONTENT_TYPE_STRING = "Content-Type";
+static const std::string CONTENT_ENCODING_STRING = "Content-Transfer-Encoding";
 
 void
 Parser::parseLine(DataBuffer line, DataBuffer &name, DataBuffer &filename, DataBuffer &type) {
 	while (!line.empty()) {
 		DataBuffer head, tail, key, value;
 		line.split(';', head, tail);
-		head.split('=', key, value);
-		if (NAME_STRING.size() == key.size() && key.startsWith(NAME_STRING)) {
-			name = value.trimn(1, 1);
-		}
-		else if (FILENAME_STRING.size() == key.size() && key.startsWith(FILENAME_STRING)) {
-			filename = value.trimn(1, 1);
-		}
-		else if (CONTENT_TYPE_STRING.size() == key.size() && key.startsWithCI(CONTENT_TYPE_STRING)) {
-			type = value.trim();
+		if(head.split('=', key, value)) {
+			if (NAME_STRING.size() == key.size() && key.startsWith(NAME_STRING)) {
+				name = value.trimn(1, 1);
+			}
+			else if (FILENAME_STRING.size() == key.size() && key.startsWith(FILENAME_STRING)) {
+				filename = value.trimn(1, 1);
+			}
+		} else if(head.split(':', key, value)){
+			if (CONTENT_TYPE_STRING.size() == key.size() && key.startsWithCI(CONTENT_TYPE_STRING)) {
+				type = value.trim();
+			}
+			// if (CONTENT_ENCODING_STRING.size() == key.size() && key.startsWithCI(CONTENT_ENCODING_STRING)) {
+			// 	encoding = value.trim();
+			// }
 		}
 		line = tail.trim();
 	}
